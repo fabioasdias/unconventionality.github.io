@@ -126,8 +126,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
-    console.log(this.refs);
     let remember=(d)=>{
       if (!this.state.fixed){
         let cExt=this.state.extended.slice();
@@ -243,7 +241,6 @@ class App extends Component {
 
             <div style={{width:'400px',border:'solid',borderWidth:'thin',height:'713px',overflowY:'scroll',overflowX:'hidden',margin:'5px',padding:'5px'}}>
             {cFactors.map((C,i)=>{
-              console.log(C);
               return(<div style={{width:'fit-content'}}>
                 <p style={{width:'fit-content',margin:'auto'}}>
                   {C.name +' - '+ (
