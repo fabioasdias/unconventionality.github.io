@@ -86,10 +86,12 @@ for nc in range(res['minFactors'],res['maxFactors']+1):
         theta=(2*np.pi/nc)*i
         fixed[nName]=[np.cos(theta)/2 +0.5,np.sin(theta)/2 +0.5]
 
+    sw=np.sum(W,axis=0)
+
     cRes['factors']=[]
     for i in range(P.shape[0]):
         nName='P{0}'.format(i)
-        cRes['factors'].append({'name':'P{0}'.format(i), 'order':i,'coords': fixed[nName],'patt':P[i,:].tolist()})
+        cRes['factors'].append({'name':'P{0}'.format(i), 'order':i,'coords': fixed[nName],'patt':P[i,:].tolist(),'globalWeight':sw[i],'normGlobalWeight':sw[i]/np.sum(sw)})
 
     for CW in range(W.shape[0]):
         c,w=i2c[CW]

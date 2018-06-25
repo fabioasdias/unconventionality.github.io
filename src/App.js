@@ -242,9 +242,17 @@ class App extends Component {
             </div>
 
             <div style={{width:'400px',border:'solid',borderWidth:'thin',height:'713px',overflowY:'scroll',overflowX:'hidden',margin:'5px',padding:'5px'}}>
-            {cFactors.map((C)=>{
+            {cFactors.map((C,i)=>{
+              console.log(C);
               return(<div style={{width:'fit-content'}}>
-                <p style={{width:'fit-content',margin:'auto'}}>{C.name}</p>
+                <p style={{width:'fit-content',margin:'auto'}}>
+                  {C.name +' - '+ (
+                      (this.state.hint!==undefined)?
+                      'W: '+this.state.hint.weights[C.order].toFixed(3).toString()+' ('+(100*(this.state.hint.weights[C.order]/this.state.hint.weights.reduce((a, b) => a + b, 0))).toFixed(2).toString() +'%)'
+                      :(100*(+C.normGlobalWeight).toFixed(2).toString()+'%')
+                    )
+                  }
+                </p>
                 <div style={{width:'fit-content',margin:'auto'}}>
                 <XYPlot
                   width={350}
