@@ -1,0 +1,14 @@
+.App {
+  display: flex;
+}
+.plot{
+  width: 800px;
+  height: 780px;
+  border: solid;
+  border-width: thin;
+  margin: 5px;
+  padding: 5px;
+}
+.slider{
+  width: 100px;
+}
