@@ -210,7 +210,7 @@ class App extends Component {
 
         <div style={{display:'block'}}>
           <div style={{display:'flex',width:'fit-content',border:'solid',borderWidth:'thin',height:'fit-content',margin:'5px',padding:'5px'}}>
-            <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
+            {/* <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
               <p>Number of factors</p>
               <select style={{height:'2em',margin:'auto'}}
                 onChange={changeFactors}>          
@@ -223,7 +223,7 @@ class App extends Component {
                         </option>)
                 })}
               </select>          
-            </div>
+            </div> */}
             <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
               <p>Min. population</p>
               <select 
@@ -263,6 +263,7 @@ class App extends Component {
                   <LineSeries
                     size={1}
                     color={"black"}
+                    strokeStyle={'dashed'}
                     data={C.line}
                   />
                 </XYPlot>
@@ -362,7 +363,7 @@ class App extends Component {
                   color={colours['Niche']}
                   data={C.Niche}
                 />
-                
+
                 <LineSeries
                   size={1}
                   strokeWidth={2}
