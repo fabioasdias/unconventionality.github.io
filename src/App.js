@@ -173,9 +173,9 @@ class App extends Component {
     }
     let colours={};
     colours['Patterns']='darkgrey';
-    colours['Rock']='black';
-    colours['HipHop']='grey';
-    colours['Niche']='white';
+    colours['Rock']='red';
+    colours['HipHop']='green';
+    colours['Niche']='blue';
     let clegend=[];
     for (let w in colours){
       clegend.push({title:w, color:colours[w], border: (w==='Patterns')?'black':'darkgrey'});
