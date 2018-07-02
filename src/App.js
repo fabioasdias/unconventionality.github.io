@@ -173,9 +173,9 @@ class App extends Component {
     }
     let colours={};
     colours['Patterns']='darkgrey';
-    colours['Rock']='red';
-    colours['HipHop']='green';
-    colours['Niche']='blue';
+    colours['Rock']='black';
+    colours['HipHop']='grey';
+    colours['Niche']='white';
     let clegend=[];
     for (let w in colours){
       clegend.push({title:w, color:colours[w], border: (w==='Patterns')?'black':'darkgrey'});
@@ -288,6 +288,7 @@ class App extends Component {
               onValueMouseOver={remember}
               onValueClick={fixed}
               onValueMouseOut={forget}        
+              strokeWidth={2}
               stroke="darkgrey"
               data={this.state.current.pmsa}
               />
@@ -298,6 +299,7 @@ class App extends Component {
               stroke="black"
               opacity={1}
               strokeWidth={2}
+              markType={'star'}
               data={this.state.current.factors}
               />          
             <LabelSeries
@@ -337,18 +339,41 @@ class App extends Component {
                 >
                 <LineSeries
                   size={1}
-                  color={colours['Rock']}
+                  stroke={'darkgrey'}
+                  strokeWidth={5}
                   data={C.Rock}
                 />
                 <LineSeries
                   size={1}
+                  strokeWidth={2}
+                  color={colours['Rock']}
+                  data={C.Rock}
+                />
+
+                <LineSeries
+                  size={1}
+                  stroke={'darkgrey'}
+                  strokeWidth={5}
+                  data={C.Niche}
+                />
+                <LineSeries
+                  size={1}
+                  strokeWidth={2}
+                  color={colours['Niche']}
+                  data={C.Niche}
+                />
+                
+                <LineSeries
+                  size={1}
+                  strokeWidth={2}
                   color={colours['HipHop']}
                   data={C.HipHop}
                 />
                 <LineSeries
                   size={1}
-                  color={colours['Niche']}
-                  data={C.Niche}
+                  stroke={'darkgrey'}
+                  strokeWidth={5}
+                  data={C.HipHop}
                 />
 
                 <XAxis title="Unconventionality"/>
