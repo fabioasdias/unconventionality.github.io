@@ -92,29 +92,29 @@ class App extends Component {
 
   componentDidMount() {
 
-    getData('./dataFull.json',(d)=>{
+    getData('./data500k.json',(d)=>{
       let data=this.state.data;
       d=fixLine(d);
 
-      data.full=d;
-      let cExt = findMinMax(data.full.results[0].pmsa);      
-      let byCity = fixByCity(data.full.results[0]);
+      data.k500=d;
+      let cExt = findMinMax(data.k500.results[0].pmsa);      
+      let byCity = fixByCity(data.k500.results[0]);
 
-      this.setState({current:data.full.results[0], 
+      this.setState({current:data.k500.results[0], 
         byCity:byCity.ret,
         cities:byCity.cities,
         extended: byCity.cities.map((d)=>{return(false)}),
         data:data, 
-        cName:'full',
-        factors:data.full.results[0].nfactors, 
+        cName:'k500',
+        factors:data.k500.results[0].nfactors, 
         cCity:undefined,
         hint:undefined,
         cMin:cExt[0],
         cMax:cExt[1],
        });
     })
-    let urls=['./data500k.json','./data1M.json','./data1.5M.json','./data2M.json'];
-    let names=['k500','M1','M15','M2']
+    let urls=['./dataFull.json','./data1M.json','./data1.5M.json','./data2M.json'];
+    let names=['full','M1','M15','M2']
     for (let i=0;i<urls.length;i++){
       getData(urls[i], (d)=>{
         let data=this.state.data;
@@ -173,16 +173,23 @@ class App extends Component {
     }
     let colours={};
     colours['Patterns']='darkgrey';
-    colours['Rock']='red';
-    colours['HipHop']='green';
-    colours['Niche']='blue';
+    if (false){
+      colours['Rock']='red'; 
+      colours['HipHop']='green';
+      colours['Niche']='blue';  
+    }else{
+      colours['Rock']='black'; 
+      colours['HipHop']='grey';
+      colours['Niche']='white';
+    }
+
     let clegend=[];
     for (let w in colours){
       clegend.push({title:w, color:colours[w], border: (w==='Patterns')?'black':'darkgrey'});
     }
     let nFactors=[];
-    if (this.state.data.full!==undefined){
-      nFactors=range(this.state.data.full.minFactors,this.state.data.full.maxFactors);
+    if (this.state.data.k500!==undefined){
+      nFactors=range(this.state.data.k500.minFactors,this.state.data.k500.maxFactors);
     }
     let RedExt=(e)=>{
       let c=parseInt(e.target.getAttribute('data-cluster'),10);
@@ -209,8 +216,8 @@ class App extends Component {
 
 
         <div style={{display:'block'}}>
-          <div style={{display:'flex',width:'fit-content',border:'solid',borderWidth:'thin',height:'fit-content',margin:'5px',padding:'5px'}}>
-            {/* <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
+          {/*<div style={{display:'flex',width:'fit-content',border:'solid',borderWidth:'thin',height:'fit-content',margin:'5px',padding:'5px'}}>
+             <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
               <p>Number of factors</p>
               <select style={{height:'2em',margin:'auto'}}
                 onChange={changeFactors}>          
@@ -223,7 +230,7 @@ class App extends Component {
                         </option>)
                 })}
               </select>          
-            </div> */}
+            </div> 
             <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
               <p>Min. population</p>
               <select 
@@ -237,9 +244,9 @@ class App extends Component {
                 })}
               </select>          
             </div>
-            </div>
+            </div>*/}
 
-            <div style={{width:'400px',border:'solid',borderWidth:'thin',height:'713px',overflowY:'scroll',overflowX:'hidden',margin:'5px',padding:'5px'}}>
+            <div style={{width:'400px',border:'solid',borderWidth:'thin',height:'780px',overflowY:'scroll',overflowX:'hidden',margin:'5px',padding:'5px'}}>
             {cFactors.map((C,i)=>{
               return(<div style={{width:'fit-content'}}>
                 <p style={{width:'fit-content',margin:'auto'}}>
