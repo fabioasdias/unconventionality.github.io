@@ -173,7 +173,7 @@ class App extends Component {
     }
     let colours={};
     colours['Patterns']='darkgrey';
-    if (false){
+    if (true){
       colours['Rock']='red'; 
       colours['HipHop']='green';
       colours['Niche']='blue';  
