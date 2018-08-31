@@ -1,6 +1,10 @@
 .App {
   display: flex;
 }
+.outer {
+  display: block;
+}
+
 .plot{
   width: 800px;
   height: 780px;
@@ -8,7 +12,14 @@
   border-width: thin;
   margin: 5px;
   padding: 5px;
+  float:left;
 }
 .slider{
   width: 100px;
+}
+.footer {
+  font-size: small;
+  margin: auto;
+  margin-top:10px;
+  width: fit-content;
 }

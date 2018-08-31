@@ -1,0 +1,141 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Unconventionality - Documentation</title>
+        <base target="_blank">
+        <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">        
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+            });
+        </script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+    </head>
+    <body style="width:80%;margin:auto;margin-top:50px;margin-bottom:50px">
+        <h1>Unconventionality</h1>
+            <p>Cities are breeding grounds of distinct modes of cultural
+            activity.  In this study, we examine how popular musicians define
+            themselves differently depending on their location.  In particular,
+            we examine the relationship between bands' degree of conventionality
+            and unconventionality and their popularity.  We show that this
+            relationship in general exhibits a non-linear, inverted U pattern:
+            extremely conventional bands are relatively unpopular, somewhat
+            unconventional bands show more popularity, while the most unusual
+            bands are not very popular. </p>
+
+            <p>However, this general pattern shifts, across musical genres and
+            geography.   Some cities show greater receptivity to
+            unconventionality, with more unconventional bands achieving greater
+            popularity, while in others more conventional bands tend to thrive.
+            We examine several features of the urban environment that might
+            explain these variations. We do so using a large database of nearly
+            3 million band profiles from myspace.com, circa 2007.</p>
+
+        <h2>Method</h2>
+            <p>Each pair (city, world) has a curve that associates
+            conventionality with popularity. For instance, the curve for 'Rock'
+            in 'Los Angeles - Long Beach' looks like this:</p>
+
+            <div style="width:fit-content;margin:auto">
+                <img src="LA_Rock.png">
+            </div>
+
+            <p>Our objective is to identify trends among these curves. Are there
+            similar patterns between them? To identify those patterns, we start
+            by stacking each of those curves, leading to a matrix $V_{(n,m)}$:</p>
+
+            <div style="width:fit-content;margin:auto">
+                <img src="matrix.png">
+            </div>
+            
+
+            <p>This new matrix is decomposed using the <a
+            href="https://en.wikipedia.org/wiki/Non-negative_matrix_factorization">Non-negative
+            Matrix Factorization</a> (NMF). This factorization finds two new
+            matrices, $W_{(n,k)}$ and $H_{(k,m)}$, such that $V\approx WH$,
+            where $k$ is a parameter of the method, with $k << m$ and $k << n$.
+            That means that the matrices $W$ and $H$ can be used to approximate
+            the original matrix $V$.</p>
+
+            <p>In our experiments, we empirically selected $k=3$, leading to a
+            matrix $W$ of size $(n,3)$, where $n$ is three times the number of
+            cities in the dataset; and a matrix $H$ of size $(3,m)$, where $m$
+            is the length of each vector (curve). We sampled each curve 100
+            times, so $m=100$.</p>
+
+            <p><b>Interpretation of the decomposition:</b> A more useful way to
+            interpret this decomposition is as <i>weights</i> and
+            <i>patterns</i>. Each column of $V$ corresponds to a pair
+            (city,world) and can be approximated by multiplying one row of $W$
+            by a column of $H$. In this sense, the columns of $H$ represent
+            composing patterns while the rows of $W$ represent the weights of
+            those patterns.</p>
+
+            <h2>Visualization interface</h2>
+
+            <p>Our interface illustrates exactly those patterns and weights, as
+            computed by the NMF. It contains three panels:</p>
+
+            <div style="width:fit-content;margin:auto">
+                <a href="ui.png" target="_blank">
+                    <img width="800px" src="ui.png">
+                </a>
+            </div>
+
+            <p><b>The left panel</b> indicates the three <b>patterns</b> present
+            in the matrix $H$ and the average <b>weights</b> present in matrix
+            $W$, if nothing is selected. If a pair (city, world) is selected,
+            this panel will display the same three patterns, but ordered
+            according to their weights considering only the selection. The
+            weights are also represented as a percentage, so we can easily
+            identify dominant patterns. </p>
+
+            <p><b>The middle panel</b> contains a <a
+            href="https://cran.r-project.org/web/packages/Radviz/vignettes/single_cell_projections.html">RadViz</a>
+            plot that contains one point for each pattern (grey circles, with an
+            associated number) and points for each pair (city, world), such that
+            the distance between them is proportional to the weights of that
+            pair. In other words, <b>points near a pattern are more similar to
+            that pattern</b>. However, the plot also attempts to spread the
+            points over the space, reducing overlaps and occlusions.</p>
+            
+            <p><b>The right panel</b> contains a expandable list illustrating
+            the <b>original curves</b> for each city, for comparison.</p>
+                
+            <h3>Concrete example</h3>
+                <p>To further illustrate how to interpret the results and the
+                interface, let's consider a concrete example: HipHop in New
+                York:</p>
+
+                <div style="width:fit-content;margin:auto">
+                    <a href="nyHH.png" target="_blank">
+                        <img width="800px" src="nyHH.png">
+                    </a>
+                </div>
+
+                <p>From the middle panel, we infer that the curve corresponding
+                to (NYC,HipHop) is more similar to patterns 2 and 3, and less
+                similar to pattern 1. Indeed, pattern 2 contributes with $41\%$
+                of the weights, followed by pattern 1 with $37\%$ and pattern 3
+                with $21\%$. While this may seem counter-intuitive, all points
+                between this one and the pattern 1 are more strongly associated
+                to it. Indeed, pattern 1 contributes significantly to all
+                curves. </p>
+
+                <p>On the right panel, we can see that the orange curve,
+                corresponding to HipHop, increases with unconventionality, with
+                a valley around $0.8$, increasing again afterwards. To arrive at
+                this curve using a weighted combination of the patterns depicted
+                on the left panel, pattern 1 contributes with an increasing
+                unconventionality that decreases near the end, pattern 3
+                includes a quick rise near the end, and pattern 2 provides a
+                valley around $0.8$. All three patterns are necessary to compose
+                the original curve, including the increasing behavior (pattern
+                1), the valley (pattern 2), and the rise at the end (pattern 3).
+                </p>
+
+        <footer>
+            &nbsp;
+        </footer>
+    </body>
+</html>

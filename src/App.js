@@ -12,6 +12,21 @@ function uniq(a) {
   });
 }
 
+function getColours(){
+  let colours={};
+    colours['Patterns']='darkgrey';
+    if (true){
+      colours['Rock']='#1b9e77'; 
+      colours['HipHop']='#d95f02';
+      colours['Niche']='#7570b3';  
+    }else{
+      colours['Rock']='black'; 
+      colours['HipHop']='grey';
+      colours['Niche']='white';
+    }
+  return(colours);
+}
+
 function oneHot(N,I){
   let ret=[];
   for (let i=0;i<N;i++){
@@ -171,17 +186,7 @@ class App extends Component {
                      cMin:cExt[0],
                      cMax:cExt[1]})
     }
-    let colours={};
-    colours['Patterns']='darkgrey';
-    if (true){
-      colours['Rock']='red'; 
-      colours['HipHop']='green';
-      colours['Niche']='blue';  
-    }else{
-      colours['Rock']='black'; 
-      colours['HipHop']='grey';
-      colours['Niche']='white';
-    }
+    let colours=getColours();
 
     let clegend=[];
     for (let w in colours){
@@ -212,219 +217,222 @@ class App extends Component {
       cFactors=this.state.current.factors.slice()
     }
     return (
-      <div className="App">
+      <div className="outerApp">
+        <div className="App">
 
 
-        <div style={{display:'block'}}>
-          {/*<div style={{display:'flex',width:'fit-content',border:'solid',borderWidth:'thin',height:'fit-content',margin:'5px',padding:'5px'}}>
-             <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
-              <p>Number of factors</p>
-              <select style={{height:'2em',margin:'auto'}}
-                onChange={changeFactors}>          
-                {nFactors.map((d)=>{
-                  return(<option 
-                          selected={d===this.state.factors}
-                          key={d}
-                          value={d}>
-                        {d}
-                        </option>)
-                })}
-              </select>          
-            </div> 
-            <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
-              <p>Min. population</p>
-              <select 
-                style={{height:'2em',margin:'auto'}}
-                onChange={changeThres}>          
-                <option key={0} value={'full'} selected={this.state.cName==='full'}>0</option>
-                <option key={1} value={'k500'} selected={this.state.cName==='k500'}>500k</option>
-                <option key={2} value={'M1'}   selected={this.state.cName==='M1'}>1M</option>
-                <option key={3} value={'M15'}  selected={this.state.cName==='M15'}>1.5M</option>
-                <option key={4} value={'M2'}   selected={this.state.cName==='M2'}>2M</option>
-                })}
-              </select>          
+          <div style={{display:'block'}}>
+            {/*<div style={{display:'flex',width:'fit-content',border:'solid',borderWidth:'thin',height:'fit-content',margin:'5px',padding:'5px'}}>
+              <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
+                <p>Number of factors</p>
+                <select style={{height:'2em',margin:'auto'}}
+                  onChange={changeFactors}>          
+                  {nFactors.map((d)=>{
+                    return(<option 
+                            selected={d===this.state.factors}
+                            key={d}
+                            value={d}>
+                          {d}
+                          </option>)
+                  })}
+                </select>          
+              </div> 
+              <div style={{display:'flex',width:'200px',height:'fit-content',margin:'auto'}}>          
+                <p>Min. population</p>
+                <select 
+                  style={{height:'2em',margin:'auto'}}
+                  onChange={changeThres}>          
+                  <option key={0} value={'full'} selected={this.state.cName==='full'}>0</option>
+                  <option key={1} value={'k500'} selected={this.state.cName==='k500'}>500k</option>
+                  <option key={2} value={'M1'}   selected={this.state.cName==='M1'}>1M</option>
+                  <option key={3} value={'M15'}  selected={this.state.cName==='M15'}>1.5M</option>
+                  <option key={4} value={'M2'}   selected={this.state.cName==='M2'}>2M</option>
+                  })}
+                </select>          
+              </div>
+              </div>*/}
+
+              <div style={{width:'400px',border:'solid',borderWidth:'thin',height:'780px',overflowY:'scroll',overflowX:'hidden',margin:'5px',padding:'5px'}}>
+              {cFactors.map((C,i)=>{
+                return(<div style={{width:'fit-content'}}>
+                  <p style={{width:'fit-content',margin:'auto'}}>
+                    {C.name +' - '+ (
+                        (this.state.hint!==undefined)?
+                        'W: '+this.state.hint.weights[C.order].toFixed(3).toString()+' ('+(100*(this.state.hint.weights[C.order]/this.state.hint.weights.reduce((a, b) => a + b, 0))).toFixed(2).toString() +'%)'
+                        :(100*(+C.normGlobalWeight).toFixed(2).toString()+'%')
+                      )
+                    }
+                  </p>
+                  <div style={{width:'fit-content',margin:'auto'}}>
+                  <XYPlot
+                    width={350}
+                    height={200}
+                    // yRange={[0,10]}
+                    // yDomain={[this.state.cMin,this.state.cMax]}
+                    >
+                    <XAxis title="Unconventionality"/>
+                    <YAxis title="Popularity"/>
+
+                    <LineSeries
+                      size={1}
+                      color={"black"}
+                      strokeStyle={'dashed'}
+                      data={C.line}
+                    />
+                  </XYPlot>
+                  </div>
+                </div>)
+              })}
             </div>
-            </div>*/}
+          </div>
 
-            <div style={{width:'400px',border:'solid',borderWidth:'thin',height:'780px',overflowY:'scroll',overflowX:'hidden',margin:'5px',padding:'5px'}}>
-            {cFactors.map((C,i)=>{
-              return(<div style={{width:'fit-content'}}>
-                <p style={{width:'fit-content',margin:'auto'}}>
-                  {C.name +' - '+ (
-                      (this.state.hint!==undefined)?
-                      'W: '+this.state.hint.weights[C.order].toFixed(3).toString()+' ('+(100*(this.state.hint.weights[C.order]/this.state.hint.weights.reduce((a, b) => a + b, 0))).toFixed(2).toString() +'%)'
-                      :(100*(+C.normGlobalWeight).toFixed(2).toString()+'%')
-                    )
-                  }
-                </p>
-                <div style={{width:'fit-content',margin:'auto'}}>
-                <XYPlot
-                  width={350}
+
+          <div className="plot">
+            <XYPlot
+              getX={d=>d.coords[0]}
+              getY={d=>d.coords[1]}
+              getColor={(d)=>((d.world===undefined)?'darkgrey':colours[d.world])}
+              getOpacity={(d)=>((this.state.cCity===d.city)||(this.state.cCity===undefined)||(d.city===undefined))?1:0.2}
+              getSize={(d)=>(d.pop===undefined)?200:(d.pop)}
+              sizeRange={[3,15]}
+              colorType="literal"
+              width={750}
+              height={750}>
+              <MarkSeries
+                onValueMouseOver={remember}
+                onValueClick={fixed}
+                onValueMouseOut={forget}        
+                strokeWidth={2}
+                stroke="darkgrey"
+                data={this.state.current.pmsa}
+                />
+              <MarkSeries
+                onValueMouseOver={remember}
+                onValueClick={fixed}
+                onValueMouseOut={forget}                
+                stroke="black"
+                opacity={1}
+                strokeWidth={2}
+                markType={'star'}
+                data={this.state.current.factors}
+                />          
+              <LabelSeries
+                getLabel={d=>d.name}
+                data={this.state.current.factors}
+                />          
+
+              <div style={{display:'flex',width:'fit-content'}}>
+                      {clegend.map((d)=>{
+                        return(<div key='a' style={{display:'flex',width:'100px',color:'black'}}>
+                                <div style={{width:'1em',height:'1em',backgroundColor:d.color,border:'solid',borderColor:d.border}}></div>
+                                <div><p style={{width:'fit-content',height:'fit-content',margin:'auto'}}>{d.title}</p></div>
+                              </div>);
+                      })}
+                      <div style={{paddingLeft: '360px'}}>
+                        <button onClick={(d)=>{
+                          this.setState({fixed:false,hint:undefined,cCity:undefined,extended:this.state.extended.map((d)=>{return(false)})});
+                          }
+                        } alt="clear selection">
+                        X
+                        </button>
+                      </div>
+              </div>
+
+            </XYPlot>
+          </div>
+
+          <div style={{width:'430px',border:'solid',borderWidth:'thin',height:'780px',overflowY:'scroll',overflowX:'hidden',margin:'5px',padding:'5px'}}>
+            {this.state.byCity.map((C,I)=>{
+              let plot=[];
+              if (this.state.extended[I]){
+                plot.push(<XYPlot
+                  width={400}
                   height={200}
                   // yRange={[0,10]}
                   // yDomain={[this.state.cMin,this.state.cMax]}
                   >
-                  <XAxis title="Unconventionality"/>
-                  <YAxis title="Popularity"/>
+                  <LineSeries
+                    size={1}
+                    stroke={'darkgrey'}
+                    strokeWidth={5}
+                    data={C.Rock}
+                  />
+                  <LineSeries
+                    size={1}
+                    strokeWidth={2}
+                    color={colours['Rock']}
+                    data={C.Rock}
+                  />
 
                   <LineSeries
                     size={1}
-                    color={"black"}
-                    strokeStyle={'dashed'}
-                    data={C.line}
+                    stroke={'darkgrey'}
+                    strokeWidth={5}
+                    data={C.Niche}
                   />
-                </XYPlot>
+                  <LineSeries
+                    size={1}
+                    strokeWidth={2}
+                    color={colours['Niche']}
+                    data={C.Niche}
+                  />
+
+                  <LineSeries
+                    size={1}
+                    stroke={'darkgrey'}
+                    strokeWidth={5}
+                    data={C.HipHop}
+                  />
+                  <LineSeries
+                    size={1}
+                    strokeWidth={2}
+                    color={colours['HipHop']}
+                    data={C.HipHop}
+                  />
+                  <XAxis title="Unconventionality"/>
+                  <YAxis title="Popularity"/>
+                </XYPlot>);
+
+              }
+              return(<div style={{width:'fit-content',border:'solid',borderWidth:'thin',borderColor:'lightgray',margin:'2px',padding:'2px'}}>
+                <div style={{width:'400px',display:'flex'}}>
+                  <p 
+                    style={{width:'fit-content',
+                            margin:'auto',
+                            color:(this.state.cCity===C.city)?'black':'darkgrey',
+                            fontWeight:(this.state.cCity===C.city)?'bolder':'normal',
+                          }}
+                    onClick={(d)=>{
+                      let cExt=this.state.extended;
+                      cExt[this.state.cities.indexOf(C.city)]=true;
+                      this.setState({cCity:C.city,extended:cExt,fixed:true});
+                    }}
+                    >
+                      {C.city}
+                    </p>
+                  <img 
+                          src={this.state.extended[I]?"chevron-top.svg":"chevron-bottom.svg"}
+                          title={this.state.extended[I]?"Collapse":"Expand"}
+                          alt={this.state.extended[I]?"Collapse":"Expand"}
+                          height="16" 
+                          width="16" 
+                          data-cluster={I}                            
+                          onClick={RedExt}                            
+                          style={{verticalAlign:'middle',cursor:'pointer'}}>
+                      </img>
+                </div>
+                <div style={{width:'fit-content',margin:'auto'}}>
+                  {plot}
                 </div>
               </div>)
             })}
           </div>
         </div>
-
-
-        <div className="plot">
-          <XYPlot
-            getX={d=>d.coords[0]}
-            getY={d=>d.coords[1]}
-            getColor={(d)=>((d.world===undefined)?'darkgrey':colours[d.world])}
-            getOpacity={(d)=>((this.state.cCity===d.city)||(this.state.cCity===undefined)||(d.city===undefined))?1:0.2}
-            getSize={(d)=>(d.pop===undefined)?200:(d.pop)}
-            sizeRange={[3,15]}
-            colorType="literal"
-            width={750}
-            height={750}>
-            <MarkSeries
-              onValueMouseOver={remember}
-              onValueClick={fixed}
-              onValueMouseOut={forget}        
-              strokeWidth={2}
-              stroke="darkgrey"
-              data={this.state.current.pmsa}
-              />
-            <MarkSeries
-              onValueMouseOver={remember}
-              onValueClick={fixed}
-              onValueMouseOut={forget}                
-              stroke="black"
-              opacity={1}
-              strokeWidth={2}
-              markType={'star'}
-              data={this.state.current.factors}
-              />          
-            <LabelSeries
-              getLabel={d=>d.name}
-              data={this.state.current.factors}
-              />          
-
-            <div style={{display:'flex',width:'fit-content'}}>
-                    {clegend.map((d)=>{
-                      return(<div style={{display:'flex',width:'100px',color:'black'}}>
-                              <div style={{width:'1em',height:'1em',backgroundColor:d.color,border:'solid',borderColor:d.border}}></div>
-                              <div><p style={{width:'fit-content',height:'fit-content',margin:'auto'}}>{d.title}</p></div>
-                            </div>);
-                    })}
-                    <div style={{paddingLeft: '360px'}}>
-                      <button onClick={(d)=>{
-                        this.setState({fixed:false,hint:undefined,cCity:undefined,extended:this.state.extended.map((d)=>{return(false)})});
-                        }
-                      } alt="clear selection">
-                      X
-                      </button>
-                    </div>
-            </div>
-
-          </XYPlot>
-        </div>
-
-        <div style={{width:'430px',border:'solid',borderWidth:'thin',height:'780px',overflowY:'scroll',overflowX:'hidden',margin:'5px',padding:'5px'}}>
-          {this.state.byCity.map((C,I)=>{
-            let plot=[];
-            if (this.state.extended[I]){
-              plot.push(<XYPlot
-                width={400}
-                height={200}
-                // yRange={[0,10]}
-                // yDomain={[this.state.cMin,this.state.cMax]}
-                >
-                <LineSeries
-                  size={1}
-                  stroke={'darkgrey'}
-                  strokeWidth={5}
-                  data={C.Rock}
-                />
-                <LineSeries
-                  size={1}
-                  strokeWidth={2}
-                  color={colours['Rock']}
-                  data={C.Rock}
-                />
-
-                <LineSeries
-                  size={1}
-                  stroke={'darkgrey'}
-                  strokeWidth={5}
-                  data={C.Niche}
-                />
-                <LineSeries
-                  size={1}
-                  strokeWidth={2}
-                  color={colours['Niche']}
-                  data={C.Niche}
-                />
-
-                <LineSeries
-                  size={1}
-                  strokeWidth={2}
-                  color={colours['HipHop']}
-                  data={C.HipHop}
-                />
-                <LineSeries
-                  size={1}
-                  stroke={'darkgrey'}
-                  strokeWidth={5}
-                  data={C.HipHop}
-                />
-
-                <XAxis title="Unconventionality"/>
-                <YAxis title="Popularity"/>
-              </XYPlot>);
-
-            }
-            return(<div style={{width:'fit-content',border:'solid',borderWidth:'thin',borderColor:'lightgray',margin:'2px',padding:'2px'}}>
-              <div style={{width:'400px',display:'flex'}}>
-                <p 
-                  style={{width:'fit-content',
-                          margin:'auto',
-                          color:(this.state.cCity===C.city)?'black':'darkgrey',
-                          fontWeight:(this.state.cCity===C.city)?'bolder':'normal',
-                        }}
-                  onClick={(d)=>{
-                    let cExt=this.state.extended;
-                    cExt[this.state.cities.indexOf(C.city)]=true;
-                    this.setState({cCity:C.city,extended:cExt,fixed:true});
-                  }}
-                  >
-                    {C.city}
-                  </p>
-                <img 
-                        src={this.state.extended[I]?"chevron-top.svg":"chevron-bottom.svg"}
-                        title={this.state.extended[I]?"Collapse":"Expand"}
-                        alt={this.state.extended[I]?"Collapse":"Expand"}
-                        height="16" 
-                        width="16" 
-                        data-cluster={I}                            
-                        onClick={RedExt}                            
-                        style={{verticalAlign:'middle',cursor:'pointer'}}>
-                    </img>
-              </div>
-              <div style={{width:'fit-content',margin:'auto'}}>
-                {plot}
-              </div>
-            </div>)
-          })}
-        </div>
-
-
+        <footer className="footer">
+          <a target="_blank" rel="noopener noreferrer" href="doc.html">Documentation</a>
+        </footer>
       </div>
+    
     );
   }
 }
