@@ -428,9 +428,6 @@ class App extends Component {
             })}
           </div>
         </div>
-        <footer className="footer">
-          <a target="_blank" rel="noopener noreferrer" href="doc.html">Documentation</a>
-        </footer>
       </div>
     
     );

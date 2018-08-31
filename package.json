@@ -2,7 +2,7 @@
   "name": "ui",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://fabioasdias.github.io/unconventionality/",
+  "homepage": "https://unconventionality.github.io/",
   "dependencies": {
     "gh-pages": "^1.2.0",
     "react": "^16.4.1",
