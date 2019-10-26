@@ -15,7 +15,7 @@ function uniq(a) {
 function getColours(){
   let colours={};
     colours['Patterns']='darkgrey';
-    if (true){
+    if (false){
       colours['Rock']='#1b9e77'; 
       colours['HipHop']='#d95f02';
       colours['Niche']='#7570b3';  
@@ -256,7 +256,7 @@ class App extends Component {
               {cFactors.map((C,i)=>{
                 return(<div style={{width:'fit-content'}}>
                   <p style={{width:'fit-content',margin:'auto'}}>
-                    {C.name +' - '+ (
+                    {'Pattern '+ C.name +' - '+ (
                         (this.state.hint!==undefined)?
                         'W: '+this.state.hint.weights[C.order].toFixed(3).toString()+' ('+(100*(this.state.hint.weights[C.order]/this.state.hint.weights.reduce((a, b) => a + b, 0))).toFixed(2).toString() +'%)'
                         :(100*(+C.normGlobalWeight).toFixed(2).toString()+'%')
